@@ -10,6 +10,7 @@ import pro.sky.employeespring.exceptions.EmployeeStorageIsFullException;
 import pro.sky.employeespring.service.EmployeeService;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/employee")
@@ -50,7 +51,7 @@ public class EmployeeController {
     }
 
     @RequestMapping("/printall")
-    public List<Employee> printAllEmployee() {
+    public String printAllEmployee() {
         return employeeService.getEmployees();
     }
 }

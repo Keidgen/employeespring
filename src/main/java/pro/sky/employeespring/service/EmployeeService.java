@@ -2,8 +2,6 @@ package pro.sky.employeespring.service;
 
 import pro.sky.employeespring.domain.Employee;
 
-import java.util.List;
-
 public interface EmployeeService {
 
     Employee addEmployee(String firstName, String lastName);
@@ -12,5 +10,5 @@ public interface EmployeeService {
 
     Employee findEmployee(String firstName, String lastName);
 
-    List getEmployees();
+    String getEmployees();
 }
