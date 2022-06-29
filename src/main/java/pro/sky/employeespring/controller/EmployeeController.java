@@ -22,9 +22,9 @@ public class EmployeeController {
     }
 
     @RequestMapping("/add")
-    public Employee addEmployee(@RequestParam String firstName, @RequestParam String lastName) {
+    public Employee addEmployee(@RequestParam String firstName, @RequestParam String lastName, @RequestParam String salary, @RequestParam String departmentId) {
         try {
-            return employeeService.addEmployee(firstName, lastName);
+            return employeeService.addEmployee(firstName, lastName, salary, departmentId);
         } catch (EmployeeStorageIsFullException e) {
             throw new EmployeeStorageIsFullException("Массив сотрудников заполнен");
         } catch (EmployeeAlreadyAddedException e) {
