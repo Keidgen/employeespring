@@ -10,6 +10,8 @@ import pro.sky.employeespring.exceptions.EmployeeStorageIsFullException;
 
 import java.util.*;
 
+import static org.apache.commons.lang3.StringUtils.*;
+
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
     private final int maxEmployee = 30;
@@ -33,11 +35,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (employees.size() >= maxEmployee) {
             throw new EmployeeStorageIsFullException();
         }
-        if (!StringUtils.isAlpha(firstName) || !StringUtils.isAlpha(lastName)){
-            throw new EmployeeBadRequestException();
-        }
-        firstName = StringUtils.capitalize(firstName);
-        lastName = StringUtils.capitalize(lastName);
+        validateInput(firstName, lastName);
         Employee employee = new Employee(firstName, lastName);
         if (!employees.containsValue(employee)) {
             employees.put(String.valueOf(key), employee);
@@ -48,6 +46,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee deleteEmployee(String firstName, String lastName) throws EmployeeNotFoundException {
+        validateInput(firstName, lastName);
         Employee employee = new Employee(firstName, lastName);
 
         if (employees.containsValue(employee)){
@@ -60,6 +59,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee findEmployee(String firstName, String lastName) throws EmployeeNotFoundException {
+        validateInput(firstName, lastName);
         Employee employee = new Employee(firstName, lastName);
 
         if (employees.containsValue(employee)){
@@ -78,5 +78,11 @@ public class EmployeeServiceImpl implements EmployeeService {
             allMap = allMap + key + ": " + employees.get(key) + " ";
         }
         return allMap;
+    }
+
+    private void validateInput(String firstName, String lastName) {
+        if (!(isAlpha(firstName) && isAlpha(lastName))){
+            throw new EmployeeBadRequestException();
+        }
     }
 }
