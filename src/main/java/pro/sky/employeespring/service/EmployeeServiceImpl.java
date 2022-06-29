@@ -13,20 +13,20 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final int maxEmployee = 30;
     private int key = 10;
 
-    public Map<String, Employee> employees = new HashMap<>(Map.of("1", new Employee("Гарри", "Поттер", "100", "1"),
-                                                           "2", new Employee("Гермиона" ,"Грейнджер", "90", "1"),
-                                                           "3", new Employee("Рон", "Уизли", "80", "1"),
-                                                           "4", new Employee("Драко", "Малфой", "110", "2"),
-                                                            "5", new Employee("Чжоу", "Чанг", "75", "3"),
-                                                            "6", new Employee("Седрик", "Диггори", "80", "3"),
-                                                            "7", new Employee("Северус", "Снегг", "150", "4"),
-                                                            "8", new Employee("Полумна", "Лавгуд", "75", "3"),
-                                                            "9", new Employee("Захария", "Смит", "65", "5"),
-                                                            "10", new Employee("Альбус", "Дамблдор", "200","4")
+    public final Map<String, Employee> employees = new HashMap<>(Map.of("1", new Employee("Гарри", "Поттер", 100.0, 1),
+                                                           "2", new Employee("Гермиона" ,"Грейнджер", 90.0, 1),
+                                                           "3", new Employee("Рон", "Уизли", 80.0, 1),
+                                                           "4", new Employee("Драко", "Малфой", 110.0, 2),
+                                                            "5", new Employee("Чжоу", "Чанг", 75.0, 3),
+                                                            "6", new Employee("Седрик", "Диггори", 80.0, 3),
+                                                            "7", new Employee("Северус", "Снегг", 150.0, 4),
+                                                            "8", new Employee("Полумна", "Лавгуд", 75.0, 3),
+                                                            "9", new Employee("Захария", "Смит", 65.0, 5),
+                                                            "10", new Employee("Альбус", "Дамблдор", 200.0,4)
                                                           ));
 
     @Override
-    public Employee addEmployee(String firstName, String lastName, String salary, String departmentId) throws EmployeeStorageIsFullException, EmployeeAlreadyAddedException {
+    public Employee addEmployee(String firstName, String lastName, Double salary, Integer departmentId) throws EmployeeStorageIsFullException, EmployeeAlreadyAddedException {
         key = key + 1;
         if (employees.size() >= maxEmployee) {
             throw new EmployeeStorageIsFullException();
@@ -76,6 +76,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Map getEmployeesMap() {
         return employees;
+    }
+
+    @Override
+    public List<Employee> getAll(){
+        return new ArrayList<>(employees.values());
     }
 
 }

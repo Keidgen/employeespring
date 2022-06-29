@@ -8,11 +8,11 @@ public class Employee {
     private Integer department;
     private double salary;
 
-    public Employee(String firstName, String lastName, String salary, String department) {
+    public Employee(String firstName, String lastName, Double salary, Integer department) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.department = Integer.parseInt(department);
-        this.salary = Double.parseDouble(salary);
+        this.salary = salary;
+        this.department = department;
     }
 
     public String getFirstName() {

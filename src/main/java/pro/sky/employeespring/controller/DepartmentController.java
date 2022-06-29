@@ -7,6 +7,7 @@ import pro.sky.employeespring.domain.Employee;
 import pro.sky.employeespring.service.DepartmentService;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -19,22 +20,22 @@ public class DepartmentController {
     }
 
     @RequestMapping("/max-salary")
-    public Optional<Employee> findEmpMaxSalaryOfDep(@RequestParam String departmentId) {
-        return departmentService.findMinOrMaxOfDep(departmentId, "max");
+    public Employee findEmpMaxSalaryOfDep(@RequestParam Integer departmentId) {
+        return departmentService.findMinOrMaxOfDep(departmentId, true);
     }
 
     @RequestMapping("/min-salary")
-    public Optional<Employee> findEmpMinSalaryOfDep(@RequestParam String departmentId) {
-        return departmentService.findMinOrMaxOfDep(departmentId, "min");
+    public Employee findEmpMinSalaryOfDep(@RequestParam Integer departmentId) {
+        return departmentService.findMinOrMaxOfDep(departmentId, false);
     }
 
     @RequestMapping(path = "/all")
-    public List<Employee> printEmpAll() {
+    public Map<Integer, List<Employee>> printEmpAll() {
         return departmentService.printEmpAll();
     }
 
     @RequestMapping(path = "/all", params = {"departmentId"})
-    public List<Employee> printEmpOrdDep(@RequestParam String departmentId) {
+    public List<Employee> printEmpOrdDep(@RequestParam Integer departmentId) {
         return departmentService.printEmpOrdDep(departmentId);
     }
 
