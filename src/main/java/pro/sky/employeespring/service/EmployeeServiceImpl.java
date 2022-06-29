@@ -1,8 +1,10 @@
 package pro.sky.employeespring.service;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import pro.sky.employeespring.domain.Employee;
 import pro.sky.employeespring.exceptions.EmployeeAlreadyAddedException;
+import pro.sky.employeespring.exceptions.EmployeeBadRequestException;
 import pro.sky.employeespring.exceptions.EmployeeNotFoundException;
 import pro.sky.employeespring.exceptions.EmployeeStorageIsFullException;
 
@@ -24,28 +26,6 @@ public class EmployeeServiceImpl implements EmployeeService {
                                                             "9", new Employee("Захария", "Смит"),
                                                             "10", new Employee("Альбус", "Дамблдор")
                                                           ));
-/*    private Employee[] emp = {new Employee("Гарри", "Поттер"),
-                                               new Employee("Гермиона" ,"Грейнджер"),
-                                               new Employee("Рон", "Уизли"),
-                                               new Employee("Драко", "Малфой"),
-                                               new Employee("Чжоу", "Чанг"),
-                                               new Employee("Седрик", "Диггори"),
-                                               new Employee("Северус", "Снегг"),
-                                               new Employee("Полумна", "Лавгуд"),
-                                               new Employee("Захария", "Смит"),
-                                               new Employee("Альбус", "Дамблдор"),
-                                               new Employee("Том", "Реддл"),
-                                               new Employee("Златопуст", "Локонс"),
-                                               new Employee("Джастин", "Финч-Флетчли")};
-
-
-
-
-
-
-
-    List<Employee> empl = Arrays.asList(emp);
-    List<Employee> employees = new ArrayList<>(empl);*/
 
     @Override
     public Employee addEmployee(String firstName, String lastName) throws EmployeeStorageIsFullException, EmployeeAlreadyAddedException {
@@ -53,15 +33,16 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (employees.size() >= maxEmployee) {
             throw new EmployeeStorageIsFullException();
         }
+        if (!StringUtils.isAlpha(firstName) || !StringUtils.isAlpha(lastName)){
+            throw new EmployeeBadRequestException();
+        }
+        firstName = StringUtils.capitalize(firstName);
+        lastName = StringUtils.capitalize(lastName);
         Employee employee = new Employee(firstName, lastName);
         if (!employees.containsValue(employee)) {
             employees.put(String.valueOf(key), employee);
         } else throw new EmployeeAlreadyAddedException();
-      /*  for (int i = 0; i < employees.size(); i++) {
-            if (employees.get(i).getFirstName().equals(firstName) && employees.get(i).getLastName().equals(lastName)) {
-                throw new EmployeeAlreadyAddedException();
-            }
-        }*/
+
         return employee;
     }
 
@@ -71,7 +52,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         if (employees.containsValue(employee)){
             employees.values().remove(employee);
-          //  employees.remove(employee);
             return employee;
         }
 
