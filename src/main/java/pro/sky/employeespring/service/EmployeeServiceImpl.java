@@ -1,12 +1,16 @@
 package pro.sky.employeespring.service;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import pro.sky.employeespring.domain.Employee;
 import pro.sky.employeespring.exceptions.EmployeeAlreadyAddedException;
+import pro.sky.employeespring.exceptions.EmployeeBadRequestException;
 import pro.sky.employeespring.exceptions.EmployeeNotFoundException;
 import pro.sky.employeespring.exceptions.EmployeeStorageIsFullException;
 
 import java.util.*;
+
+import static org.apache.commons.lang3.StringUtils.*;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -31,6 +35,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (employees.size() >= maxEmployee) {
             throw new EmployeeStorageIsFullException();
         }
+        validateInput(firstName, lastName);
+  
         Employee employee = new Employee(firstName, lastName, salary, departmentId);
         if (!employees.containsValue(employee)) {
             employees.put(String.valueOf(key), employee);
@@ -41,6 +47,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee deleteEmployee(String firstName, String lastName) throws EmployeeNotFoundException {
+        validateInput(firstName, lastName);
         Employee employee = new Employee(firstName, lastName, null, null);
 
         if (employees.containsValue(employee)){
@@ -53,6 +60,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee findEmployee(String firstName, String lastName) throws EmployeeNotFoundException {
+        validateInput(firstName, lastName);
         Employee employee = new Employee(firstName, lastName, null, null);
 
         if (employees.containsValue(employee)){
@@ -71,6 +79,13 @@ public class EmployeeServiceImpl implements EmployeeService {
             allMap = allMap + key + ": " + employees.get(key) + " ";
         }
         return allMap;
+    }
+
+
+    private void validateInput(String firstName, String lastName) {
+        if (!(isAlpha(firstName) && isAlpha(lastName))){
+            throw new EmployeeBadRequestException();
+        }
     }
 
     @Override
