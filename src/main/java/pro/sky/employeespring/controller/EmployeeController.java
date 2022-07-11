@@ -22,14 +22,8 @@ public class EmployeeController {
     }
 
     @RequestMapping("/add")
-    public Employee addEmployee(@RequestParam String firstName, @RequestParam String lastName) {
-        try {
-            return employeeService.addEmployee(firstName, lastName);
-        } catch (EmployeeStorageIsFullException e) {
-            throw new EmployeeStorageIsFullException("Массив сотрудников заполнен");
-        } catch (EmployeeAlreadyAddedException e) {
-            throw new EmployeeAlreadyAddedException("Сотрудник уже добавлен в массив");
-        }
+    public Employee addEmployee(@RequestParam String firstName, @RequestParam String lastName, @RequestParam Double salary, @RequestParam Integer departmentId) {
+        return employeeService.addEmployee(firstName, lastName, salary, departmentId);
     }
 
     @RequestMapping("/remove")
