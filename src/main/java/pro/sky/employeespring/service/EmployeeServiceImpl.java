@@ -17,26 +17,27 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final int maxEmployee = 30;
     private int key = 10;
 
-    Map<String, Employee> employees = new HashMap<>(Map.of("1", new Employee("Гарри", "Поттер"),
-                                                           "2", new Employee("Гермиона" ,"Грейнджер"),
-                                                           "3", new Employee("Рон", "Уизли"),
-                                                           "4", new Employee("Драко", "Малфой"),
-                                                            "5", new Employee("Чжоу", "Чанг"),
-                                                            "6", new Employee("Седрик", "Диггори"),
-                                                            "7", new Employee("Северус", "Снегг"),
-                                                            "8", new Employee("Полумна", "Лавгуд"),
-                                                            "9", new Employee("Захария", "Смит"),
-                                                            "10", new Employee("Альбус", "Дамблдор")
+    public final Map<String, Employee> employees = new HashMap<>(Map.of("1", new Employee("Гарри", "Поттер", 100.0, 1),
+                                                           "2", new Employee("Гермиона" ,"Грейнджер", 90.0, 1),
+                                                           "3", new Employee("Рон", "Уизли", 80.0, 1),
+                                                           "4", new Employee("Драко", "Малфой", 110.0, 2),
+                                                            "5", new Employee("Чжоу", "Чанг", 75.0, 3),
+                                                            "6", new Employee("Седрик", "Диггори", 80.0, 3),
+                                                            "7", new Employee("Северус", "Снегг", 150.0, 4),
+                                                            "8", new Employee("Полумна", "Лавгуд", 75.0, 3),
+                                                            "9", new Employee("Захария", "Смит", 65.0, 5),
+                                                            "10", new Employee("Альбус", "Дамблдор", 200.0,4)
                                                           ));
 
     @Override
-    public Employee addEmployee(String firstName, String lastName) throws EmployeeStorageIsFullException, EmployeeAlreadyAddedException {
+    public Employee addEmployee(String firstName, String lastName, Double salary, Integer departmentId) throws EmployeeStorageIsFullException, EmployeeAlreadyAddedException {
         key = key + 1;
         if (employees.size() >= maxEmployee) {
             throw new EmployeeStorageIsFullException();
         }
         validateInput(firstName, lastName);
-        Employee employee = new Employee(firstName, lastName);
+  
+        Employee employee = new Employee(firstName, lastName, salary, departmentId);
         if (!employees.containsValue(employee)) {
             employees.put(String.valueOf(key), employee);
         } else throw new EmployeeAlreadyAddedException();
@@ -47,7 +48,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee deleteEmployee(String firstName, String lastName) throws EmployeeNotFoundException {
         validateInput(firstName, lastName);
-        Employee employee = new Employee(firstName, lastName);
+        Employee employee = new Employee(firstName, lastName, null, null);
 
         if (employees.containsValue(employee)){
             employees.values().remove(employee);
@@ -60,7 +61,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee findEmployee(String firstName, String lastName) throws EmployeeNotFoundException {
         validateInput(firstName, lastName);
-        Employee employee = new Employee(firstName, lastName);
+        Employee employee = new Employee(firstName, lastName, null, null);
 
         if (employees.containsValue(employee)){
             return employee;
@@ -80,9 +81,21 @@ public class EmployeeServiceImpl implements EmployeeService {
         return allMap;
     }
 
+
     private void validateInput(String firstName, String lastName) {
         if (!(isAlpha(firstName) && isAlpha(lastName))){
             throw new EmployeeBadRequestException();
         }
     }
+
+    @Override
+    public Map getEmployeesMap() {
+        return employees;
+    }
+
+    @Override
+    public List<Employee> getAll(){
+        return new ArrayList<>(employees.values());
+    }
+
 }

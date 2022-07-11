@@ -8,10 +8,14 @@ import static org.apache.commons.lang3.StringUtils.capitalize;
 public class Employee {
     private String firstName;
     private String lastName;
+    private Integer department;
+    private double salary;
 
-    public Employee(String firstName, String lastName) {
-        this.firstName = capitalize(firstName.toLowerCase());
-        this.lastName = capitalize(lastName.toLowerCase());
+    public Employee(String firstName, String lastName, Double salary, Integer department) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.salary = salary;
+        this.department = department;
     }
 
     public String getFirstName() {
@@ -28,6 +32,22 @@ public class Employee {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Integer getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Integer department) {
+        this.department = department;
+    }
+
+    public Double getSalary() {
+        return this.salary;
+    }
+
+    public void setSalary(double salary) {
+        this.salary = salary;
     }
 
     @Override
@@ -47,5 +67,6 @@ public class Employee {
     public int hashCode() {
         return Objects.hash(firstName, lastName);
     }
+
 
 }
