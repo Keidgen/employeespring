@@ -21,12 +21,12 @@ public class DepartmentController {
 
     @RequestMapping("/max-salary")
     public Employee findEmpMaxSalaryOfDep(@RequestParam Integer departmentId) {
-        return departmentService.findMinOrMaxOfDep(departmentId, true);
+        return departmentService.findMaxOfDep(departmentId);
     }
 
     @RequestMapping("/min-salary")
     public Employee findEmpMinSalaryOfDep(@RequestParam Integer departmentId) {
-        return departmentService.findMinOrMaxOfDep(departmentId, false);
+        return departmentService.findMinOfDep(departmentId);
     }
 
     @RequestMapping(path = "/all")
@@ -36,7 +36,7 @@ public class DepartmentController {
 
     @RequestMapping(path = "/all", params = {"departmentId"})
     public List<Employee> printEmpOrdDep(@RequestParam Integer departmentId) {
-        return departmentService.printEmpOrdDep(departmentId);
+        return departmentService.printEmpOfDep(departmentId);
     }
 
 
