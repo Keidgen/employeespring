@@ -2,6 +2,7 @@ package pro.sky.employeespring.service;
 
 import org.springframework.stereotype.Service;
 import pro.sky.employeespring.domain.Employee;
+import pro.sky.employeespring.exceptions.EmployeeNotFoundException;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -14,29 +15,26 @@ public class DepartmentServiceImpl implements DepartmentService {
         this.employeeService = employeeService;
     }
 
-    private List<Employee> rebuildOfDep(int departmentId) {
-        Map<String, Employee> employees = employeeService.getEmployeesMap();
-        List<Employee> employeeList = new ArrayList<>(employees.values());
+    @Override
+    public Employee findMaxOfDep(Integer departmentId) {
+        return employeeService.getAll().stream()
+                .filter(employee -> employee.getDepartment() == departmentId)
+                .max(Comparator.comparingDouble(Employee::getSalary))
+                .orElseThrow(EmployeeNotFoundException::new);
+    }
 
-        return employeeList.stream()
-                .filter(e -> e.getDepartment() == departmentId)
+    public Employee findMinOfDep(Integer departmentId) {
+        return employeeService.getAll().stream()
+                .filter(employee -> employee.getDepartment() == departmentId)
+                .min(Comparator.comparingDouble(Employee::getSalary))
+                .orElseThrow(EmployeeNotFoundException::new);
+    }
+
+    @Override
+    public List<Employee> printEmpOfDep(Integer departmentId) {
+        return employeeService.getAll().stream()
+                .filter(employee -> employee.getDepartment() == departmentId)
                 .collect(Collectors.toList());
-    }
-
-    @Override
-    public Employee findMinOrMaxOfDep(Integer departmentId, Boolean direct) {
-        List <Employee> employeeOfDep = rebuildOfDep(departmentId);
-        Employee valEmp = null;
-        if (direct){
-            valEmp = employeeOfDep.stream().max(Comparator.comparing(Employee::getSalary)).get();
-        } else valEmp = employeeOfDep.stream().min(Comparator.comparing(Employee::getSalary)).get();
-
-        return valEmp;
-    }
-
-    @Override
-    public List<Employee> printEmpOrdDep(Integer departmentId) {
-        return rebuildOfDep(departmentId);
     }
 
     @Override

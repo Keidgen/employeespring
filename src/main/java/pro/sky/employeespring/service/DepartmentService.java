@@ -8,9 +8,10 @@ import java.util.Optional;
 
 public interface DepartmentService {
 
-    Employee findMinOrMaxOfDep(Integer departmentId, Boolean direct);
+    Employee findMaxOfDep(Integer departmentId);
+    Employee findMinOfDep(Integer departmentId);
 
-    List<Employee> printEmpOrdDep(Integer departmentId);
+    List<Employee> printEmpOfDep(Integer departmentId);
 
     Map<Integer, List<Employee>> printEmpAll();
 }

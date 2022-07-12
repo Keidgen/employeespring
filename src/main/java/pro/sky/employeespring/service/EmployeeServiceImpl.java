@@ -31,11 +31,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee addEmployee(String firstName, String lastName, Double salary, Integer departmentId) throws EmployeeStorageIsFullException, EmployeeAlreadyAddedException {
-        key = key + 1;
         if (employees.size() >= maxEmployee) {
             throw new EmployeeStorageIsFullException();
         }
         validateInput(firstName, lastName);
+        key = key + 1;
   
         Employee employee = new Employee(firstName, lastName, salary, departmentId);
         if (!employees.containsValue(employee)) {
@@ -46,28 +46,21 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee deleteEmployee(String firstName, String lastName) throws EmployeeNotFoundException {
-        validateInput(firstName, lastName);
-        Employee employee = new Employee(firstName, lastName, null, null);
-
-        if (employees.containsValue(employee)){
-            employees.values().remove(employee);
-            return employee;
-        }
-
-        throw new EmployeeNotFoundException();
+    public Employee deleteEmployee(String firstName, String lastName) {
+        Employee employee = employees.values().stream()
+                        .filter(emp -> emp.getFirstName().equals(firstName) && emp.getLastName().equals(lastName))
+                        .findFirst()
+                        .orElseThrow(EmployeeNotFoundException::new);
+        employees.values().remove(employee);
+        return employee;
     }
 
     @Override
-    public Employee findEmployee(String firstName, String lastName) throws EmployeeNotFoundException {
-        validateInput(firstName, lastName);
-        Employee employee = new Employee(firstName, lastName, null, null);
-
-        if (employees.containsValue(employee)){
-            return employee;
-        }
-
-        throw new EmployeeNotFoundException();
+    public Employee findEmployee(String firstName, String lastName) {
+        return employees.values().stream()
+                .filter(emp -> emp.getFirstName().equals(firstName) && emp.getLastName().equals(lastName))
+                .findFirst()
+                .orElseThrow(EmployeeNotFoundException::new);
     }
 
 
